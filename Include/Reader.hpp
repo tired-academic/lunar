@@ -15,15 +15,23 @@
 #include <cstdint>
 #include <filesystem>
 #include <string_view>
+#include <fstream>
+#include <iostream>
+#include <iterator>
+#include <cstring>
+
+#include "Utility.hpp"
 
 struct LuaFile {
     std::uint32_t lineCount;
-    std::string fileContent;
-    bool ok;
+    char* fileContent;
 };
 
 // Intakes a string_view path, ensures file existence and loads it to the struct.
-LuaFile readFromFilesystem(std::string_view path);
+FFI L_EXPORT LuaFile* readFromFilesystem(const char* path);
+
+// Frees the file, which cannot be done by the end-user because C/C++ don't mix!
+FFI L_EXPORT void freeLuaFile(LuaFile* file);
 
 // Produces the entirety of the source code from the file passed in.
-std::string_view dumpContents(LuaFile file);
+FFI L_EXPORT const char* dumpContents(LuaFile* file);

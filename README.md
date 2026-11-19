@@ -17,8 +17,12 @@ Not yet! I want to ensure 5.5 is in a stable place before I start accepting PRs 
 
 ## Compiling
 
-> [!NOTE]
-> This section is left intentionally blank as there is nothing to compile
+This project is built with CMake, and can be built on most systems. The only requirements are a C++20 compliant compiler, and a version of CMake greater than or at version 3.28.
+
+```sh
+cmake -S . -B build -G <generator>
+cmake --build build
+```
 
 ## Licenses
 

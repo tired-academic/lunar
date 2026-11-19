@@ -9,6 +9,8 @@ project(
     VERSION 0.0.1
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "In-source builds are not supported!")
 endif()
@@ -31,3 +33,9 @@ file(GLOB lunar-headers
 )
 
 add_library(Lunar SHARED ${lunar-source} ${lunar-headers})
+
+target_include_directories(Lunar PUBLIC
+    ${CMAKE_SOURCE_DIR}/Include
+)
+
+target_compile_features(Lunar PUBLIC cxx_std_20)

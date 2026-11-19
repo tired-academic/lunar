@@ -9,32 +9,25 @@ project(
     VERSION 0.0.1
 )
 
-if(${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+if(CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "In-source builds are not supported!")
 endif()
 
-option(LUNAR_C_FFI "Enables a C-friendly FFI for use in C-family projects." ON)
+option(LUNAR_C_FFI "Enables a C-friendly FFI for use in C-family projects. (unused)" ON)
+option(LUNAR_LUA_INTERPRETER "Builds Lunar as a binary interpreter for Lua. (unused)" OFF)
 
-if(NOT LUNAR_C_FFI)
-    message(STATUS "Disabling the C FFI...")
-endif()
-
-if(LUNAR_C_FFT)
-    file(GLOB_RECURSE lunar-source
-        LIST_DIRECTORIES FALSE
-        CONFIGURE_DEPENDS
-        ${CMAKE_SOURCE_DIR}/Source/**
-    )
-else()
-    # No FFI, no need for 'Source/FFI/*.c' to be globbed in
-    file(GLOB lunar-source
-        LIST_DIRECTORIES FALSE
-        CONFIGURE_DEPENDS
-        ${CMAKE_SOURCE_DIR}/Source/*.cpp)
-endif()
-
-file(GLOB_RECURSE lunar-headers
-    LIST_DIRECTORIES FALSE
+file(GLOB lunar-source
     CONFIGURE_DEPENDS
-    ${CMAKE_SOURCE_DIR}/Include/*.hpp
+    LIST_DIRECTORIES FALSE
+    ${CMAKE_SOURCE_DIR}/Source/*.cpp
+    ${CMAKE_SOURCE_DIR}/Source/*.c
 )
+
+file(GLOB lunar-headers
+    CONFIGURE_DEPENDS
+    LIST_DIRECTORIES FALSE
+    ${CMAKE_SOURCE_DIR}/Include/*.hpp
+    ${CMAKE_SOURCE_DIR}/Include/*.h
+)
+
+add_library(Lunar SHARED ${lunar-source} ${lunar-headers})
